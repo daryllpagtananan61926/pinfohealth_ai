@@ -1,0 +1,25 @@
+# Render Blueprint — PinfoHealth AI backend only.
+# Frontend deploys separately to Vercel (see frontend/vercel.json).
+# Database is Neon, external to Render (see docs/MASTER_PLAN.md §4.4).
+#
+# Deploy order: Neon first (need the connection string below), then this,
+# then Vercel, then come back and update ALLOWED_ORIGIN once the Vercel
+# URL exists.
+
+services:
+  - type: web
+    name: pinfohealth-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GEMINI_API_KEY
+        sync: false          # set manually in the Render dashboard — secret, not in git
+      - key: DATABASE_URL
+        sync: false          # the Neon pooled connection string — secret, not in git
+      - key: ALLOWED_ORIGIN
+        value: https://pinfohealth-app.vercel.app   # update to your real Vercel URL after step 3
