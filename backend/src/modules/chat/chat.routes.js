@@ -41,7 +41,10 @@ function validateChatBody(body) {
 }
 
 async function chatRoutes(fastify) {
-  fastify.post('/api/chat', async (request, reply) => {
+  fastify.post(
+    '/api/chat',
+    { config: { rateLimit: { max: 20, timeWindow: '1 hour' } } },
+    async (request, reply) => {
     const { valid, error } = validateChatBody(request.body);
     if (!valid) {
       return reply.code(400).send({ error });

@@ -19,8 +19,7 @@ await app.register(cors, {
 });
 
 await app.register(rateLimit, {
-  max: 20,
-  timeWindow: '1 hour',
+  global: false,
 });
 
 app.get('/health', async () => ({ status: 'ok' }));
