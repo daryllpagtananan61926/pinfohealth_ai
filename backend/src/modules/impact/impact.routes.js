@@ -16,7 +16,7 @@ function validateFeedbackBody(body) {
     return { valid: false, error: 'sessionId must be a non-empty string.' };
   }
   if (typeof body.helpful !== 'boolean') {
-    return { valid: false, error: 'helpful must be a boolean..' };
+    return { valid: false, error: 'helpful must be a boolean.' };
   }
   return { valid: true, error: null };
 }
