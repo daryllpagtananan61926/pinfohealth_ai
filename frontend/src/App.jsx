@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ChatWindow from './components/ChatWindow.jsx';
+import { reportSessionStarted } from './lib/api.js';
 
 function Landing({ onStart }) {
   return (
@@ -29,6 +30,9 @@ function App() {
     const id = crypto.randomUUID();
     setSessionId(id);
     setShowChat(true);
+    reportSessionStarted(id).catch((err) => {
+      console.error('Failed to record session start:', err);
+    });
   };
 
   if (!showChat) {

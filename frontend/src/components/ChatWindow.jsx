@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import MessageBubble from './MessageBubble.jsx';
+import FeedbackPrompt from './FeedbackPrompt.jsx';
 import { sendChatMessage } from '../lib/api.js';
 
 const MAX_HISTORY_MESSAGES = 6;
@@ -8,9 +9,13 @@ function ChatWindow({ sessionId }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isWakingUp, setIsWakingUp] = useState(false);
   const [error, setError] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const wakingTimerRef = useRef(null);
+  const gotFirstTokenRef = useRef(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -30,9 +35,25 @@ function ChatWindow({ sessionId }) {
     setInput('');
     setIsLoading(true);
     setError(null);
+    setIsWakingUp(false);
+    gotFirstTokenRef.current = false;
+    clearTimeout(wakingTimerRef.current);
+    wakingTimerRef.current = setTimeout(() => {
+      if (!gotFirstTokenRef.current) {
+        setIsWakingUp(true);
+      }
+    }, 5000);
+
+    let assistantText = '';
 
     try {
-      await sendChatMessage(sessionId, newMessages, (delta) => {
+      const result = await sendChatMessage(sessionId, newMessages, (delta) => {
+        if (!gotFirstTokenRef.current) {
+          gotFirstTokenRef.current = true;
+          clearTimeout(wakingTimerRef.current);
+          setIsWakingUp(false);
+        }
+        assistantText += delta;
         setMessages((prev) => {
           const lastMsg = prev[prev.length - 1];
           if (lastMsg && lastMsg.role === 'assistant') {
@@ -41,10 +62,15 @@ function ChatWindow({ sessionId }) {
           return [...prev, { role: 'assistant', content: delta }];
         });
       });
+      if (result === 'normal' && assistantText.trim()) {
+        setShowFeedback(true);
+      }
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
       setMessages((prev) => prev.slice(0, -1));
     } finally {
+      clearTimeout(wakingTimerRef.current);
+      setIsWakingUp(false);
       setIsLoading(false);
     }
   };
@@ -60,11 +86,18 @@ function ChatWindow({ sessionId }) {
             <MessageBubble key={i} role={msg.role} content={msg.content} />
           ))}
           {isLoading && (
-            <div style={styles.typing}>
-              <span>PinfoHealth is thinking</span>
-              <span className="dots">...</span>
-            </div>
+            isWakingUp ? (
+              <div style={styles.waking}>
+                Waking up the AI, this can take up to a minute on the first message
+              </div>
+            ) : (
+              <div style={styles.typing}>
+                <span>PinfoHealth is thinking</span>
+                <span className="dots">...</span>
+              </div>
+            )
           )}
+          {showFeedback && <FeedbackPrompt sessionId={sessionId} />}
           <div ref={messagesEndRef} />
         </div>
       </div>
@@ -86,7 +119,6 @@ function ChatWindow({ sessionId }) {
           Send
         </button>
       </form>
-      {/* TODO: FeedbackPrompt component will go here (depends on /api/feedback backend route) */}
     </div>
   );
 }
@@ -131,6 +163,16 @@ const styles = {
     color: '#666',
     fontSize: '0.9rem',
     padding: '8px 0',
+  },
+  waking: {
+    padding: '12px 16px',
+    background: '#eef2ff',
+    border: '1px solid #c7d2fe',
+    borderRadius: '8px',
+    color: '#1e40af',
+    fontSize: '0.9rem',
+    fontWeight: 500,
+    lineHeight: 1.4,
   },
   error: {
     padding: '12px 16px',

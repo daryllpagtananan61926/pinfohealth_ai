@@ -22,12 +22,12 @@ export async function sendChatMessage(sessionId, messages, onDelta) {
     const data = await response.json();
     if (data.type === 'crisis' && data.reply) {
       onDelta(data.reply);
+      return 'crisis';
     } else if (data.error) {
       throw new Error(data.error);
     } else {
       throw new Error('Unexpected JSON response');
     }
-    return;
   }
 
   if (!contentType.includes('text/event-stream')) {
@@ -63,5 +63,45 @@ export async function sendChatMessage(sessionId, messages, onDelta) {
         continue;
       }
     }
+  }
+
+  return 'normal';
+}
+
+export async function sendFeedback(sessionId, helpful) {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (!apiUrl) {
+    throw new Error('VITE_API_URL not configured');
+  }
+
+  const response = await fetch(`${apiUrl}/api/feedback`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ sessionId, helpful }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Feedback request failed with status ${response.status}`);
+  }
+}
+
+export async function reportSessionStarted(sessionId) {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (!apiUrl) {
+    return;
+  }
+
+  const response = await fetch(`${apiUrl}/api/session-started`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ sessionId }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Session start request failed with status ${response.status}`);
   }
 }

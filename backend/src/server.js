@@ -8,6 +8,12 @@ import impactRoutes from './modules/impact/impact.routes.js';
 
 const app = Fastify({ logger: { level: 'info' } });
 
+if (!process.env.ALLOWED_ORIGIN) {
+  app.log.warn(
+    `ALLOWED_ORIGIN is not set; CORS will only allow ${config.allowedOrigin}. Set it to the deployed Vercel URL in production.`
+  );
+}
+
 await app.register(cors, {
   origin: config.allowedOrigin ? [config.allowedOrigin] : false,
 });
