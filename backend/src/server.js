@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import config from './config.js';
 import chatRoutes from './modules/chat/chat.routes.js';
+import impactRoutes from './modules/impact/impact.routes.js';
 
 const app = Fastify({ logger: { level: 'info' } });
 
@@ -18,6 +20,7 @@ await app.register(rateLimit, {
 app.get('/health', async () => ({ status: 'ok' }));
 
 await app.register(chatRoutes);
+await app.register(impactRoutes);
 
 try {
   await app.listen({ port: config.port, host: '0.0.0.0' });

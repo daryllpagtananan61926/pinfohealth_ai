@@ -1,5 +1,7 @@
 import { streamGeminiDeltas } from './chat.service.js';
 import { checkCrisis, CRISIS_RESPONSE } from '../safety/crisis-check.js';
+import { logEvent } from '../impact/impact.repository.js';
+import config from '../../config.js';
 
 const VALID_ROLES = new Set(['user', 'assistant']);
 const MAX_CONTENT_LENGTH = 2000;
@@ -59,6 +61,8 @@ async function chatRoutes(fastify) {
       'Cache-Control': 'no-cache, no-transform',
       Connection: 'keep-alive',
       'X-Accel-Buffering': 'no',
+      'Access-Control-Allow-Origin': config.allowedOrigin,
+      Vary: 'Origin',
     });
 
     try {
@@ -67,6 +71,11 @@ async function chatRoutes(fastify) {
       }
       reply.raw.write('data: [DONE]\n\n');
       reply.raw.end();
+      try {
+        await logEvent('message_sent');
+      } catch (error) {
+        request.log.error({ err: error.message }, 'failed to log message_sent impact event');
+      }
     } catch (error) {
       request.log.error({ err: error.message }, 'chat streaming failed');
       if (!reply.raw.headersSent) {
