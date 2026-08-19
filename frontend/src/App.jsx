@@ -102,7 +102,7 @@ function Landing({ onStart }) {
     { q: 'What if I\'m in crisis?', a: 'If you type something indicating immediate danger or self-harm, PinfoHealth intercepts it before the AI responds and shows you crisis helpline numbers (NCMH: 1553 / 1800-1888-1553 / 0917-899-8727).' },
     { q: 'How long is a session?', a: 'As long or short as you need. Most conversations resolve in 5–10 exchanges. Close the tab anytime — the session ends.' },
     { q: 'Can I share a session?', a: 'Each session has a unique URL (/chat/:id). You can share it to continue on another device, but the conversation only lives in the browser where it started.' },
-    { q: 'Is it really free?', a: 'Yes. No subscriptions, no hidden costs. Built for the DoGoodie $5 Impact Hack — impact over revenue.' }
+    { q: 'Is it really free?', a: 'Yes. No subscriptions, no hidden costs. Built for real positive impact.' }
   ];
 
   return (
@@ -123,6 +123,25 @@ function Landing({ onStart }) {
         <button className="landing-start" onClick={onStart}>
           Start a conversation
         </button>
+
+        {/* Conversation preview - moved up after CTA */}
+        <div className="preview-card" aria-hidden="true">
+          <p className="preview-heading">A conversation with PinfoHealth</p>
+          <div className="preview-bubbles">
+            <div className="bubble preview-bubble preview-user">
+              I&apos;ve been wiped out after classes lately.
+            </div>
+            <div className="bubble preview-bubble preview-assistant">
+              That sounds heavy. Is it more physical exhaustion, the mental pressure, or
+              something specific that happened?
+            </div>
+            <div className="bubble preview-bubble preview-assistant">
+              If it&apos;s mostly the pressure — here&apos;s one small step: pause for 60
+              seconds and write down the one deadline that&apos;s actually due first.
+            </div>
+          </div>
+          <p className="preview-note">No advice on the first reply. No labels. Just clarity.</p>
+        </div>
 
         {/* How it helps */}
         <section className="landing-section" aria-labelledby="features-heading">
@@ -180,23 +199,6 @@ function Landing({ onStart }) {
             ))}
           </div>
         </section>
-
-        {/* Conversation preview */}
-        <div className="preview-card" aria-hidden="true">
-          <p className="preview-heading">A conversation with PinfoHealth</p>
-          <div className="bubble preview-bubble preview-user">
-            I&apos;ve been wiped out after classes lately.
-          </div>
-          <div className="bubble preview-bubble preview-assistant">
-            That sounds heavy. Is it more physical exhaustion, the mental pressure, or
-            something specific that happened?
-          </div>
-          <div className="bubble preview-bubble preview-assistant">
-            If it&apos;s mostly the pressure — here&apos;s one small step: pause for 60
-            seconds and write down the one deadline that&apos;s actually due first.
-          </div>
-          <p className="preview-note">No advice on the first reply. No labels. Just clarity.</p>
-        </div>
 
         {/* FAQ */}
         <section className="landing-section" aria-labelledby="faq-heading">
