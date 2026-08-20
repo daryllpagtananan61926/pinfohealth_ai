@@ -1327,3 +1327,313 @@ button {
     justify-content: center;
   }
 }
+
+/* Generative UI Components */
+.message-ui {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ui-block {
+  animation: fadeUp 0.3s ease;
+}
+
+.ui-component {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.ui-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ui-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.ui-cycle,
+.ui-duration,
+.ui-step {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  border: none;
+  min-width: 120px;
+}
+
+.ui-btn:active:not(:disabled) { transform: scale(0.98); }
+.ui-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ui-btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.ui-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 16px rgba(62, 107, 79, 0.4);
+}
+
+.ui-btn-primary.running {
+  background: var(--warm);
+}
+
+.ui-btn-primary.done {
+  background: var(--accent);
+  opacity: 0.8;
+}
+
+.ui-btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.ui-btn-secondary:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.ui-btn-secondary.voted {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.ui-hint {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Breathing Exercise */
+.breathing-exercise { text-align: center; }
+
+.breathing-circle-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px;
+}
+
+.breathing-svg { width: 100%; height: 100%; }
+
+.breathing-progress {
+  transition: stroke-dashoffset 0.05s linear, stroke 0.3s ease;
+}
+
+.breathing-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  pointer-events: none;
+}
+
+.breathing-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3rem;
+  color: var(--text-primary);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Micro Habit Card */
+.micro-habit-card { text-align: center; }
+
+.micro-habit-card.done .habit-title { text-decoration: line-through; color: var(--text-secondary); }
+
+.habit-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.habit-desc {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.habit-complete {
+  margin: 12px 0 0;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-style: italic;
+}
+
+/* Mood Button */
+.mood-button { text-align: center; }
+
+.mood-options {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.mood-btn {
+  width: 56px;
+  height: 56px;
+  font-size: 1.8rem;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.mood-btn:hover { transform: scale(1.1); border-color: var(--accent); }
+
+.mood-btn.selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 4px var(--focus-ring);
+  transform: scale(1.15);
+}
+
+.mood-confirmed {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+/* Quick Poll */
+.quick-poll { text-align: center; }
+
+.poll-question {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.poll-options {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.poll-confirmed {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+/* Grounding 54321 */
+.grounding-54321 { text-align: center; }
+
+.grounding-progress-bar {
+  height: 6px;
+  background: var(--bg-subtle);
+  border-radius: 3px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.grounding-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.grounding-sense {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.grounding-instruction {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.grounding-count {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.grounding-number {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.grounding-54321.complete .grounding-done {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Mobile adjustments for UI components */
+@media (max-width: 480px) {
+  .ui-component { padding: 16px; }
+  
+  .breathing-circle-wrap { width: 140px; height: 140px; }
+  
+  .breathing-count { font-size: 2.5rem; }
+  
+  .mood-btn { width: 48px; height: 48px; font-size: 1.5rem; }
+  
+  .grounding-number { width: 32px; height: 32px; font-size: 0.9rem; }
+}

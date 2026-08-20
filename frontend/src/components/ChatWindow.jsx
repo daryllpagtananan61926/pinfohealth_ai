@@ -4,7 +4,8 @@ import FeedbackPrompt from './FeedbackPrompt.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
 import Logo from './Logo.jsx';
 import TakeawayCard from './TakeawayCard.jsx';
-import { sendChatMessage } from '../lib/api.js';
+import { renderUIComponent } from './ui/ComponentRegistry.jsx';
+import { sendChatMessage, logUIEvent } from '../lib/api.js';
 
 const MAX_HISTORY_MESSAGES = 6;
 
@@ -21,6 +22,7 @@ function ChatWindow() {
   const inputRef = useRef(null);
   const wakingTimerRef = useRef(null);
   const gotFirstTokenRef = useRef(false);
+  const currentAssistantIndexRef = useRef(-1);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -49,6 +51,20 @@ function ChatWindow() {
     if (habit) setShowTakeaway(true);
   };
 
+  const handleUIAction = (componentName, action, payload) => {
+    const eventMap = {
+      'breathing-exercise': 'ui_breathing_complete',
+      'micro-habit-card': 'ui_habit_done',
+      'mood-button': 'ui_mood_select',
+      'quick-poll': 'ui_poll_vote',
+      'grounding-54321': 'ui_grounding_done',
+    };
+    const eventType = eventMap[componentName];
+    if (eventType) {
+      logUIEvent(sessionIdRef.current, eventType, { component: componentName, action, payload });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -69,23 +85,40 @@ function ChatWindow() {
     }, 5000);
 
     let assistantText = '';
+    let assistantUI = [];
+    let assistantMessageIndex = -1;
 
     try {
-      const result = await sendChatMessage(sessionIdRef.current, newMessages, (delta) => {
-        if (!gotFirstTokenRef.current) {
-          gotFirstTokenRef.current = true;
-          clearTimeout(wakingTimerRef.current);
-          setIsWakingUp(false);
-        }
-        assistantText += delta;
-        setMessages((prev) => {
-          const lastMsg = prev[prev.length - 1];
-          if (lastMsg && lastMsg.role === 'assistant') {
-            return [...prev.slice(0, -1), { ...lastMsg, content: lastMsg.content + delta }];
+      const result = await sendChatMessage(
+        sessionIdRef.current,
+        newMessages,
+        (delta) => {
+          if (!gotFirstTokenRef.current) {
+            gotFirstTokenRef.current = true;
+            clearTimeout(wakingTimerRef.current);
+            setIsWakingUp(false);
           }
-          return [...prev, { role: 'assistant', content: delta }];
-        });
-      });
+          assistantText += delta;
+          setMessages((prev) => {
+            const lastMsg = prev[prev.length - 1];
+            if (lastMsg && lastMsg.role === 'assistant') {
+              return [...prev.slice(0, -1), { ...lastMsg, content: lastMsg.content + delta, ui: assistantUI }];
+            }
+            assistantMessageIndex = prev.length;
+            return [...prev, { role: 'assistant', content: delta, ui: assistantUI }];
+          });
+        },
+        (component, props) => {
+          assistantUI.push({ component, props });
+          setMessages((prev) => {
+            const lastMsg = prev[prev.length - 1];
+            if (lastMsg && lastMsg.role === 'assistant') {
+              return [...prev.slice(0, -1), { ...lastMsg, ui: assistantUI }];
+            }
+            return [...prev, { role: 'assistant', content: '', ui: assistantUI }];
+          });
+        }
+      );
       if (result === 'normal' && assistantText.trim()) {
         setShowFeedback(true);
       }
@@ -111,7 +144,14 @@ function ChatWindow() {
       <div className="chat-messages-wrap">
         <div className="chat-messages">
           {messages.map((msg, i) => (
-            <MessageBubble key={i} role={msg.role} content={msg.content} />
+            <MessageBubble
+              key={i}
+              role={msg.role}
+              content={msg.content}
+              ui={msg.ui}
+              renderUIComponent={renderUIComponent}
+              onUIAction={handleUIAction}
+            />
           ))}
           {isLoading &&
             (isWakingUp ? (

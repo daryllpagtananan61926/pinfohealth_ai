@@ -69,8 +69,12 @@ async function chatRoutes(fastify) {
     });
 
     try {
-      for await (const delta of streamGeminiDeltas(request.body.messages)) {
-        reply.raw.write(`data: ${JSON.stringify({ delta })}\n\n`);
+      for await (const chunk of streamGeminiDeltas(request.body.messages)) {
+        if (chunk.type === 'text') {
+          reply.raw.write(`data: ${JSON.stringify({ type: 'text', delta: chunk.delta })}\n\n`);
+        } else if (chunk.type === 'ui') {
+          reply.raw.write(`data: ${JSON.stringify({ type: 'ui', component: chunk.component, props: chunk.props })}\n\n`);
+        }
       }
       reply.raw.write('data: [DONE]\n\n');
       reply.raw.end();

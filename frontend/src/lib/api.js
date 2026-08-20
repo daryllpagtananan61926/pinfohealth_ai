@@ -1,4 +1,4 @@
-export async function sendChatMessage(sessionId, messages, onDelta) {
+export async function sendChatMessage(sessionId, messages, onDelta, onUI) {
   const apiUrl = import.meta.env.VITE_API_URL;
   if (!apiUrl) {
     throw new Error('VITE_API_URL not configured');
@@ -56,8 +56,10 @@ export async function sendChatMessage(sessionId, messages, onDelta) {
 
       try {
         const chunk = JSON.parse(payload);
-        if (chunk.delta) {
+        if (chunk.type === 'text' && chunk.delta) {
           onDelta(chunk.delta);
+        } else if (chunk.type === 'ui' && chunk.component && onUI) {
+          onUI(chunk.component, chunk.props);
         }
       } catch {
         continue;
@@ -103,5 +105,20 @@ export async function reportSessionStarted(sessionId) {
 
   if (!response.ok) {
     throw new Error(`Session start request failed with status ${response.status}`);
+  }
+}
+
+export async function logUIEvent(sessionId, eventType, metadata) {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (!apiUrl) return;
+
+  try {
+    await fetch(`${apiUrl}/api/ui-event`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, eventType, metadata }),
+    });
+  } catch {
+    // silently fail - analytics shouldn't break UX
   }
 }
