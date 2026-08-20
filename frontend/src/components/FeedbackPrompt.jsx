@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { sendFeedback } from '../lib/api.js';
 
-function FeedbackPrompt({ sessionId }) {
+function FeedbackPrompt({ sessionId, onComplete }) {
   const [answered, setAnswered] = useState(false);
 
   const handleChoice = (helpful) => {
@@ -9,6 +9,7 @@ function FeedbackPrompt({ sessionId }) {
     sendFeedback(sessionId, helpful).catch((error) => {
       console.error('Failed to record feedback:', error);
     });
+    if (onComplete) onComplete();
   };
 
   if (answered) {

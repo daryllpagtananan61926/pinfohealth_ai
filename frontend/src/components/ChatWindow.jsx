@@ -3,6 +3,7 @@ import MessageBubble from './MessageBubble.jsx';
 import FeedbackPrompt from './FeedbackPrompt.jsx';
 import ThemeToggle from './ThemeToggle.jsx';
 import Logo from './Logo.jsx';
+import TakeawayCard from './TakeawayCard.jsx';
 import { sendChatMessage } from '../lib/api.js';
 
 const MAX_HISTORY_MESSAGES = 6;
@@ -14,6 +15,7 @@ function ChatWindow({ sessionId }) {
   const [isWakingUp, setIsWakingUp] = useState(false);
   const [error, setError] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showTakeaway, setShowTakeaway] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const wakingTimerRef = useRef(null);
@@ -26,6 +28,25 @@ function ChatWindow({ sessionId }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const getLastAssistantMessage = () => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].role === 'assistant' && messages[i].content.trim()) {
+        return messages[i].content.trim();
+      }
+    }
+    return null;
+  };
+
+  const isCrisisSession = () => {
+    return messages.some(m => m.role === 'assistant' && m.content.includes('NCMH Crisis Hotline'));
+  };
+
+  const handleFeedbackComplete = () => {
+    if (isCrisisSession()) return;
+    const habit = getLastAssistantMessage();
+    if (habit) setShowTakeaway(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +124,7 @@ function ChatWindow({ sessionId }) {
                 <span className="typing-dot" />
               </div>
             ))}
-          {showFeedback && <FeedbackPrompt sessionId={sessionId} />}
+          {showFeedback && <FeedbackPrompt sessionId={sessionId} onComplete={handleFeedbackComplete} />}
           <div ref={messagesEndRef} />
         </div>
       </div>
@@ -141,6 +162,12 @@ function ChatWindow({ sessionId }) {
           </button>
         </form>
       </div>
+      {showTakeaway && (
+        <TakeawayCard
+          microHabit={getLastAssistantMessage()}
+          onClose={() => setShowTakeaway(false)}
+        />
+      )}
     </div>
   );
 }
