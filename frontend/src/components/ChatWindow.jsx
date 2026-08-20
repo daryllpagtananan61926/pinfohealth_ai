@@ -8,7 +8,8 @@ import { sendChatMessage } from '../lib/api.js';
 
 const MAX_HISTORY_MESSAGES = 6;
 
-function ChatWindow({ sessionId }) {
+function ChatWindow() {
+  const sessionIdRef = useRef(crypto.randomUUID());
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +71,7 @@ function ChatWindow({ sessionId }) {
     let assistantText = '';
 
     try {
-      const result = await sendChatMessage(sessionId, newMessages, (delta) => {
+      const result = await sendChatMessage(sessionIdRef.current, newMessages, (delta) => {
         if (!gotFirstTokenRef.current) {
           gotFirstTokenRef.current = true;
           clearTimeout(wakingTimerRef.current);
@@ -124,7 +125,7 @@ function ChatWindow({ sessionId }) {
                 <span className="typing-dot" />
               </div>
             ))}
-          {showFeedback && <FeedbackPrompt sessionId={sessionId} onComplete={handleFeedbackComplete} />}
+          {showFeedback && <FeedbackPrompt sessionId={sessionIdRef.current} onComplete={handleFeedbackComplete} />}
           <div ref={messagesEndRef} />
         </div>
       </div>

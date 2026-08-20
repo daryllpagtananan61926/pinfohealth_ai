@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import ChatWindow from './components/ChatWindow.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
 import Logo from './components/Logo.jsx';
@@ -101,7 +101,6 @@ function Landing({ onStart }) {
     { q: 'Is my data private?', a: 'Yes. No accounts, no message persistence, no tracking. The only data stored is an anonymous event counter (session started, message sent, feedback given) — no content, no identifiers.' },
     { q: 'What if I\'m in crisis?', a: 'If you type something indicating immediate danger or self-harm, PinfoHealth intercepts it before the AI responds and shows you crisis helpline numbers (NCMH: 1553 / 1800-1888-1553 / 0917-899-8727).' },
     { q: 'How long is a session?', a: 'As long or short as you need. Most conversations resolve in 5–10 exchanges. Close the tab anytime — the session ends.' },
-    { q: 'Can I share a session?', a: 'Each session has a unique URL (/chat/:id). You can share it to continue on another device, but the conversation only lives in the browser where it started.' },
     { q: 'Is it really free?', a: 'Yes. No subscriptions, no hidden costs. Built for real positive impact.' }
   ];
 
@@ -225,7 +224,7 @@ function Landing({ onStart }) {
 function LandingPage({ navigate }) {
   const handleStart = () => {
     const id = crypto.randomUUID();
-    navigate(`/chat/${id}`, { replace: true });
+    navigate(`/chat`, { replace: true });
     reportSessionStarted(id).catch((err) => {
       console.error('Failed to record session start:', err);
     });
@@ -235,8 +234,7 @@ function LandingPage({ navigate }) {
 }
 
 function ChatPage() {
-  const { sessionId } = useParams();
-  return <ChatWindow sessionId={sessionId} />;
+  return <ChatWindow />;
 }
 
 function AppRoutes() {
@@ -245,7 +243,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage navigate={navigate} />} />
-      <Route path="/chat/:sessionId" element={<ChatPage />} />
+      <Route path="/chat" element={<ChatPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
