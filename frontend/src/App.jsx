@@ -267,6 +267,9 @@ function Landing({ onStart }) {
               Daryll Pagtananan
             </a>
           </p>
+          <p className="site-footer-date">
+            PinfoHealth AI <span className="site-footer-sep" aria-hidden="true">·</span> Aug. 2026
+          </p>
         </footer>
       </div>
     </div>
