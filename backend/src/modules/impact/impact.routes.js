@@ -1,4 +1,4 @@
-import { logEvent, logUIEvent } from './impact.repository.js';
+import { logEvent, logUIEvent, getImpactSummary } from './impact.repository.js';
 
 async function safeLog(request, eventType) {
   try {
@@ -54,6 +54,16 @@ const ALLOWED_UI_EVENT_TYPES = new Set([
 ]);
 
 async function impactRoutes(fastify) {
+  fastify.get('/api/impact-summary', async (request, reply) => {
+    try {
+      const data = await getImpactSummary();
+      return reply.send({ ok: true, data });
+    } catch (error) {
+      request.log.error({ err: error.message }, 'failed to fetch impact summary');
+      return reply.code(500).send({ error: 'Something went wrong. Please try again.' });
+    }
+  });
+
   fastify.post('/api/session-started', async (request, reply) => {
     await safeLog(request, 'session_started');
     return reply.send({ ok: true });

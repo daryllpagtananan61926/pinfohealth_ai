@@ -10,3 +10,10 @@ export async function logUIEvent(eventType, metadata) {
     [eventType, JSON.stringify(metadata)]
   );
 }
+
+export async function getImpactSummary() {
+  const { rows } = await pool.query(
+    'SELECT event_type, COUNT(*)::int AS count FROM impact_events GROUP BY event_type'
+  );
+  return rows.reduce((acc, row) => ({ ...acc, [row.event_type]: row.count }), {});
+}

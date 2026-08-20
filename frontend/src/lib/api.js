@@ -122,3 +122,17 @@ export async function logUIEvent(sessionId, eventType, metadata) {
     // silently fail - analytics shouldn't break UX
   }
 }
+
+export async function fetchImpactSummary() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (!apiUrl) {
+    throw new Error('VITE_API_URL not configured');
+  }
+
+  const response = await fetch(`${apiUrl}/api/impact-summary`);
+  if (!response.ok) {
+    throw new Error(`Impact summary request failed with status ${response.status}`);
+  }
+  const json = await response.json();
+  return json.data || {};
+}

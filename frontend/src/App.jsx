@@ -3,6 +3,7 @@ import ChatWindow from './components/ChatWindow.jsx';
 import ThemeToggle from './components/ThemeToggle.jsx';
 import Logo from './components/Logo.jsx';
 import NotFound from './components/NotFound.jsx';
+import ImpactPage from './components/ImpactPage.jsx';
 import { reportSessionStarted } from './lib/api.js';
 
 function Landing({ onStart }) {
@@ -123,6 +124,25 @@ function Landing({ onStart }) {
           Start a conversation
         </button>
 
+        <a className="landing-impact-btn" href="/impact" aria-label="See our live impact dashboard">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M3 3v18h18" />
+            <path d="M7 14l4-4 3 3 5-6" />
+          </svg>
+          See our live impact
+        </a>
+
         {/* Conversation preview - moved up after CTA */}
         <div className="preview-card" aria-hidden="true">
           <p className="preview-heading">A conversation with PinfoHealth</p>
@@ -216,6 +236,9 @@ function Landing({ onStart }) {
           I am an AI wellness companion, not a doctor. In a medical emergency, please seek
           professional help.
         </p>
+        <a className="landing-impact-link" href="/impact">
+          See our live impact →
+        </a>
       </div>
     </div>
   );
@@ -244,6 +267,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<LandingPage navigate={navigate} />} />
       <Route path="/chat" element={<ChatPage />} />
+      <Route path="/impact" element={<ImpactPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

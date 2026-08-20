@@ -150,6 +150,8 @@ button {
   .landing-title,
   .landing-pitch,
   .landing-start,
+  .landing-impact-btn,
+  .landing-impact-link,
   .landing-disclaimer,
   .feature-card,
   .landing-section,
@@ -267,6 +269,52 @@ button {
   animation: fadeUp 0.7s ease 0.8s forwards;
   opacity: 0;
   transform: translateY(8px);
+}
+
+.landing-impact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  animation: fadeUp 0.7s ease 0.35s forwards;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.landing-impact-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.landing-impact-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+  animation: fadeUp 0.7s ease 0.9s forwards;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.landing-impact-link:hover {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent);
 }
 
 /* Preview card */
@@ -1636,4 +1684,176 @@ button {
   .mood-btn { width: 48px; height: 48px; font-size: 1.5rem; }
   
   .grounding-number { width: 32px; height: 32px; font-size: 0.9rem; }
+}
+
+/* Impact page */
+.impact {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 24px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.impact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 420px at 15% 10%, rgba(62, 107, 79, 0.1), transparent 60%),
+    radial-gradient(520px 400px at 88% 85%, rgba(201, 123, 93, 0.1), transparent 60%);
+  pointer-events: none;
+}
+
+.impact-top {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 1;
+}
+
+.impact-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 760px;
+  width: 100%;
+}
+
+.impact-badge {
+  margin-bottom: 20px;
+}
+
+.impact-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  color: var(--text-primary);
+}
+
+.impact-pitch {
+  margin: 0 0 32px;
+  max-width: 520px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.impact-error {
+  max-width: 480px;
+}
+
+.impact-total-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 28px 48px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lift);
+  margin-bottom: 24px;
+}
+
+.impact-total-label {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.impact-total-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  line-height: 1;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.impact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 24px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.impact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: var(--accent);
+}
+
+.impact-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.impact-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--text-primary);
+}
+
+.impact-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.impact-note {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.impact-empty {
+  margin: 24px 0;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.impact-back {
+  margin-top: 32px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.impact-back:hover {
+  color: var(--accent-hover);
+}
+
+.impact-footer {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .impact { padding: 32px 18px; }
+  .impact-total-card { padding: 24px 28px; }
 }

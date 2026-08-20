@@ -162,6 +162,19 @@ Logs a generative UI interaction (analytics only). Request:
 
 Returns `{ "status": "ok" }` with zero dependencies — no DB or LLM call.
 
+### `GET /api/impact-summary`
+
+Public, read-only. Returns anonymous impact counters straight from the database (no message content — only event counts):
+
+```json
+{
+  "ok": true,
+  "data": { "session_started": 42, "message_sent": 118, "feedback_yes": 9 }
+}
+```
+
+This powers the public impact dashboard at `/impact`.
+
 ---
 
 ## Generative UI Components
