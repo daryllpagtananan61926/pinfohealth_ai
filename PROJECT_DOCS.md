@@ -1,4 +1,4 @@
-# PinfoHealth AI — Project Documentation
+  # PinfoHealth AI — Project Documentation
 
 ## Overview
 A Socratic AI wellness companion for university students and anyone needing a calm, grounded ear. Built for the DoGoodie $5 Impact Hack (7-day hackathon).

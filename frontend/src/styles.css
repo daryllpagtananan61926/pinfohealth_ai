@@ -285,6 +285,8 @@ button {
   animation: fadeUp 0.6s ease forwards;
   opacity: 0;
   transform: translateY(16px);
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .preview-heading {
@@ -300,6 +302,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .preview-bubble {
@@ -310,6 +313,8 @@ button {
   max-width: 88%;
   animation: fadeUp 0.35s ease forwards;
   opacity: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .preview-bubble:nth-child(1) { animation-delay: 0.2s; }
@@ -321,6 +326,7 @@ button {
   background: var(--accent-soft);
   color: var(--text-primary);
   border-bottom-right-radius: 6px;
+  margin-left: auto;
 }
 
 .preview-assistant {
@@ -329,6 +335,7 @@ button {
   color: var(--text-primary);
   border: 1px solid var(--border);
   border-bottom-left-radius: 6px;
+  margin-right: auto;
 }
 
 .preview-note {
@@ -1122,6 +1129,57 @@ button {
   }
 
   .preview-card {
-    padding: 14px;
+    margin-top: 20px;
+    padding: 18px 16px 16px;
+    border-radius: var(--radius-md);
+  }
+
+  .preview-heading {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  .preview-bubble {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 92%;
+    border-radius: 16px;
+  }
+
+  .preview-note {
+    font-size: 0.75rem;
+    margin-top: 10px;
+  }
+
+  .landing-start {
+    padding: 14px 32px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .preview-card {
+    padding: 16px 14px 14px;
+    margin-top: 16px;
+  }
+
+  .preview-bubble {
+    padding: 9px 12px;
+    font-size: 0.8rem;
+    max-width: 95%;
+    border-radius: 14px;
+  }
+
+  .preview-heading {
+    font-size: 0.8rem;
+  }
+
+  .landing-title {
+    font-size: clamp(1.7rem, 6vw, 2.2rem);
+  }
+
+  .landing-pitch {
+    font-size: 0.95rem;
   }
 }

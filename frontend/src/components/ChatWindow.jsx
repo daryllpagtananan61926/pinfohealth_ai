@@ -82,7 +82,7 @@ function ChatWindow({ sessionId }) {
       <div className="chat-header">
         <div className="chat-brand">
           <Logo size={34} />
-          <h2 className="chat-title">PinfoHealth</h2>
+          <h2 className="chat-title">PinfoHealth AI</h2>
         </div>
         <ThemeToggle />
       </div>
