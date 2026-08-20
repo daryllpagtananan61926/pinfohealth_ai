@@ -2,7 +2,19 @@
 
 **One calm question at a time.** A Socratic AI wellness companion for anyone who could use a grounded ear — university students first, but everyone in between. Built for the DoGoodie $5 Impact Hack.
 
-PinfoHealth doesn't diagnose, prescribe, or lecture. It asks one focused question at a time, helps you clarify what's actually going on, then offers exactly **one** small, concrete action you can take in under two minutes — rendered as a shareable takeaway.
+### The Problem
+
+Feeling overwhelmed is common; knowing what to do about it is not. Students and working adults under pressure face a well-known gap: professional mental-health support is expensive, scarce, and often stigmatized, while the free advice that is available is almost always **generic** — "exercise more," "take a break" — too vague to act on in the moment, and too big to fit into a life that is already full. The result is someone who is stuck, not for lack of effort, but for lack of a specific next step.
+
+### What PinfoHealth does about it
+
+PinfoHealth inverts the default. It does not diagnose, prescribe, or lecture — it asks. One focused question at a time, it helps you name what is actually going on (physical exhaustion, mental/emotional pressure, or a specific event), then offers exactly **one** small, concrete action you can take in under **two minutes**, phrased in your own words. Specificity is the mechanism: a specific action is actionable, a generic one is not. Each micro-step is delivered as a shareable takeaway card you can complete and carry with you.
+
+### The impact
+
+- **On the person** — an anonymous, judgment-free first step that is available on demand, needs no appointment, and fits in the space between classes, shifts, and deadlines — turning "I'm overwhelmed" into "here is one thing I can do right now."
+- **On safety** — the one moment it must not be an AI, it is not. Language suggesting self-harm or immediate danger is intercepted before the model ever sees it and answered with verified NCMH crisis hotline numbers, 24/7.
+- **On scale** — each exchange costs a fraction of a cent, so the entire $5 hackathon budget funds thousands of conversations, and every session is logged as an anonymous counter — turning a wellness chat into measurable, reportable impact.
 
 > **Important:** PinfoHealth is an AI wellness companion, **not** a therapist, doctor, or medical professional. It never gives medical advice. Crisis language is intercepted before the AI ever sees it and returns verified helpline numbers immediately.
 
