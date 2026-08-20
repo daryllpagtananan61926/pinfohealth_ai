@@ -239,6 +239,35 @@ function Landing({ onStart }) {
         <a className="landing-impact-link" href="/impact">
           See our live impact →
         </a>
+
+        <footer className="site-footer">
+          <div className="site-footer-divider" aria-hidden="true" />
+          <p className="site-footer-text">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M12 21C7 16 3 12.5 3 8.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 9 2.5c0 4-4 7.5-9 12.5z" />
+            </svg>
+            Developed by{' '}
+            <a
+              className="site-footer-link"
+              href="https://daryll-pagtananan-portfolio.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Daryll Pagtananan
+            </a>
+          </p>
+        </footer>
       </div>
     </div>
   );
