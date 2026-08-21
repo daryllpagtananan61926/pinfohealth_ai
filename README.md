@@ -27,8 +27,13 @@ PinfoHealth inverts the default. It does not diagnose, prescribe, or lecture —
 ![Chat with generative UI](docs/screenshots/chat.png)
 ![Takeaway card](docs/screenshots/takeaway.png)
 -->
+![Landing page](docs/pics_1.jpg)
+![Chat with Generative UI](docs/pics_2.jpg)
+![Chat with Generative UI](docs/pics_3.jpg)
+![Chat with Generative UI](docs/pics_4.jpg)
+![Takeaway Card](docs/pics_5.jpg)
 
-*Screenshots coming soon.*
+
 
 ---
 
