@@ -111,6 +111,22 @@ function Landing({ onStart }) {
         <ThemeToggle />
       </div>
       <div className="landing-inner">
+        <div className="won-banner" role="status" aria-label="Winner announcement">
+          <span className="won-confetti" aria-hidden="true">🎉</span>
+          <span className="won-trophy" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 13c0 3.87 2.69 7 6 7s6-3.13 6-7-2.69-7-6-7-6 3.13-6 7z" />
+              <path d="M9 20h6" />
+              <path d="M12 20v2" />
+              <path d="M6 9H4a2 2 0 0 1 0-4h2" />
+              <path d="M18 9h2a2 2 0 0 0 0-4h-2" />
+            </svg>
+          </span>
+          <span className="won-text">
+            <strong>Winner</strong> — DoGoodie $5 Impact Hack
+          </span>
+          <span className="won-confetti" aria-hidden="true">✨</span>
+        </div>
         <Logo size={68} className="landing-badge" />
         <h1 className="landing-title">One calm question at a time.</h1>
         <p className="landing-pitch">
