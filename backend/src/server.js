@@ -101,7 +101,7 @@ await app.register(helmet, {
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", 'data:'],
-      connectSrc: ["'self'", 'https://generativelanguage.googleapis.com'],
+      connectSrc: ["'self'", 'https://generativelanguage.googleapis.com', 'https://pinfohealth-ai-api.onrender.com'],
       frameAncestors: ["'none'"],
       baseUri: ["'none'"],
       formAction: ["'none'"],
