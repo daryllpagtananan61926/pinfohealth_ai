@@ -1,5 +1,7 @@
 # PinfoHealth AI
 
+> 🏆 **Winner — DoGoodie $5 Impact Hack · 2026** — Recognized for expanding access to calm, anonymous support — a Socratic companion that helps thousands turn overwhelm into one clear, doable next step.
+
 **One calm question at a time.** A Socratic AI wellness companion for anyone who could use a grounded ear — university students first, but everyone in between. Built for the DoGoodie $5 Impact Hack.
 
 ### The Problem
@@ -306,5 +308,5 @@ Three independent services, deployed in order (each depends on the previous outp
 
 ## Acknowledgments
 
-- Built for the **DoGoodie $5 Impact Hack** — impact over revenue.
+- 🏆 **Winner — DoGoodie $5 Impact Hack (2026)** — recognized for expanding access to calm, anonymous, judgment-free support.
 - Crisis support resources: **NCMH Crisis Hotline** — 1553 / 1800-1888-1553 / 0917-899-8727, available 24/7.
