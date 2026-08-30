@@ -26,6 +26,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set test system prompt
+        run: |
+          cp ../prompts/system-prompt.example.txt ../prompts/system-prompt.txt
+          echo "SYSTEM_PROMPT_PATH=../prompts/system-prompt.txt" >> $GITHUB_ENV
+
       - name: Run tests
         run: npm test
 
