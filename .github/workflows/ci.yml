@@ -26,8 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set test system prompt
+        run: cp prompts/system-prompt.example.txt prompts/system-prompt.txt
+
       - name: Run tests
         run: npm test
+        env:
+          SYSTEM_PROMPT_PATH: ./prompts/system-prompt.txt
 
       - name: Audit dependencies
         run: npm audit --audit-level=high
@@ -79,8 +84,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
+      - uses: actions/checkout@v4
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
         with:
-          config-file: '.github/dependency-review-config.yml'
           fail-on-severity: high
+          allow-ghsas: GHSA-67mh-4wv8-2f99

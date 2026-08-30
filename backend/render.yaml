@@ -5,6 +5,11 @@
 # Deploy order: Neon first (need the connection string below), then this,
 # then Vercel, then come back and update ALLOWED_ORIGIN once the Vercel
 # URL exists.
+#
+# SECRET FILE: Add in Render Dashboard → Environment → "Add Secret File"
+#   Name: system-prompt.txt
+#   Content: (paste full prompt from backend/prompts/system-prompt.example.txt)
+#   Mount path: /etc/secrets/system-prompt.txt
 
 services:
   - type: web
@@ -14,6 +19,8 @@ services:
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /health
+    secretFiles:
+      - system-prompt.txt
     envVars:
       - key: NODE_ENV
         value: production
