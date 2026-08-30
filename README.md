@@ -1,6 +1,6 @@
 # PinfoHealth AI
 
-> 🏆 **Winner — DoGoodie $5 Impact Hack · 2026** — Recognized for expanding access to calm, anonymous support — a Socratic companion that helps thousands turn overwhelm into one clear, doable next step.
+> 🏆 **Winner — DoGoodie $5 Impact Hack · August 2026** — Recognized for expanding access to calm, anonymous support — a Socratic companion that helps thousands turn overwhelm into one clear, doable next step.
 
 **One calm question at a time.** A Socratic AI wellness companion for anyone who could use a grounded ear — university students first, but everyone in between. Built for the DoGoodie $5 Impact Hack.
 
