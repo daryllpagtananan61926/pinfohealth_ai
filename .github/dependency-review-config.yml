@@ -20,9 +20,10 @@ license-blocklist:
 
 # Severity thresholds
 fail-on-severity: high
-allow-ghsas: []  # GHSA IDs to explicitly allow (empty = none)
+allow-ghsas:
+  - "GHSA-67mh-4wv8-2f99"  # Dev-only esbuild in vite 5.x; no fix without Vite 8
 
 # Ignore specific vulnerabilities (use sparingly, with justification)
 ignored-vulnerabilities:
-  - "GHSA-67mh-4wv8-2f99"
+  - id: "GHSA-67mh-4wv8-2f99"
     justification: "Dev-only esbuild vulnerability in vite 5.x; no fix without breaking upgrade to Vite 8 (incompatible with @vitejs/plugin-react@4). Affects dev server only, not production."
