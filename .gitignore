@@ -28,9 +28,15 @@ Thumbs.db
 # Testing
 coverage/
 
+# Prompt secrets (gitignored, loaded from Render Secret File in prod)
+# Template IS committed: backend/prompts/system-prompt.example.txt
+backend/prompts/system-prompt.txt
+backend/prompts/*.local.txt
+
 # Unused / draft files
 backup/
 unused/
 docs/MASTER_PLAN.md
 AGENTS.md
 FINAL_SUBMISSION.md
+IMPLEMENTATION_PLAN.md

@@ -1,0 +1,30 @@
+# Dependency Review Configuration
+# See: https://github.com/actions/dependency-review-action
+
+# Allow-listed licenses (adjust as needed)
+license-allowlist:
+  - MIT
+  - ISC
+  - BSD-2-Clause
+  - BSD-3-Clause
+  - Apache-2.0
+  - Unlicense
+  - CC0-1.0
+  - Zlib
+
+# Block licenses
+license-blocklist:
+  - GPL-3.0-only
+  - AGPL-3.0-only
+  - SSPL-1.0
+
+# Severity thresholds
+fail-on-severity: high
+allow-ghsas: []  # GHSA IDs to explicitly allow (empty = none)
+
+# Ignore specific vulnerabilities (use sparingly, with justification)
+# Example format:
+# ignored-vulnerabilities:
+#   - "GHSA-xxxx-xxxx-xxxx"
+#     justification: "No upgrade path; mitigated by X"
+ignored-vulnerabilities: []

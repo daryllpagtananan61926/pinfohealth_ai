@@ -1,20 +1,28 @@
 import config from '../../config.js';
-import { SYSTEM_PROMPT } from './prompts.js';
+import { validateUIComponent, ALLOWED_UI_COMPONENTS } from './ui-schemas.js';
 
 export const MAX_HISTORY_MESSAGES = 6;
+export const MAX_UI_PER_SESSION = 10;
 
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 
-// UI marker pattern: [[UI:component-name:{"prop":"value"}]]
-const UI_MARKER_REGEX = /\[\[UI:([a-z-]+):(\{.*?\})\]\]/g;
+const SYSTEM_PROMPT = config.systemPrompt;
 
-const ALLOWED_UI_COMPONENTS = new Set([
-  'breathing-exercise',
-  'micro-habit-card',
-  'mood-button',
-  'quick-poll',
-  'grounding-54321',
-]);
+// UI marker pattern: [[UI:component-name:{"prop":"value"}]]
+const UI_MARKER_REGEX = /\[\[UI:([a-z0-9-]+):(\{.*?\})\]\]/g;
+
+// Session UI component counter (in-memory, per-process)
+const sessionUiCounts = new Map();
+
+function incrementUiCount(sessionId) {
+  const count = (sessionUiCounts.get(sessionId) || 0) + 1;
+  sessionUiCounts.set(sessionId, count);
+  return count;
+}
+
+export function resetUiCount(sessionId) {
+  sessionUiCounts.delete(sessionId);
+}
 
 function toGeminiContents(messages) {
   return messages.map((message) => ({
@@ -27,20 +35,32 @@ export function truncateMessages(messages) {
   return messages.slice(-MAX_HISTORY_MESSAGES);
 }
 
-function parseUIMarkers(text) {
+export function parseUIMarkers(text, sessionId) {
   const markers = [];
   let match;
   while ((match = UI_MARKER_REGEX.exec(text)) !== null) {
     const component = match[1];
     const propsJson = match[2];
-    if (ALLOWED_UI_COMPONENTS.has(component)) {
-      try {
-        const props = JSON.parse(propsJson);
-        markers.push({ component, props });
-      } catch {
-        // ignore malformed props
+    if (!ALLOWED_UI_COMPONENTS.has(component)) {
+      continue;
+    }
+    let props;
+    try {
+      props = JSON.parse(propsJson);
+    } catch {
+      continue;
+    }
+    const validation = validateUIComponent(component, props);
+    if (!validation.valid) {
+      continue;
+    }
+    if (sessionId) {
+      const count = incrementUiCount(sessionId);
+      if (count > MAX_UI_PER_SESSION) {
+        continue;
       }
     }
+    markers.push({ component, props });
   }
   return markers;
 }
@@ -49,7 +69,7 @@ function stripUIMarkers(text) {
   return text.replace(UI_MARKER_REGEX, '').trim();
 }
 
-async function* streamGeminiDeltas(messages) {
+async function* streamGeminiDeltas(messages, sessionId) {
   const url = `${GEMINI_ENDPOINT}/${config.geminiModel}:streamGenerateContent?alt=sse`;
 
   const controller = new AbortController();
@@ -112,7 +132,7 @@ async function* streamGeminiDeltas(messages) {
             accumulatedText += part.text;
             
             // Check for complete UI markers in accumulated text
-            const markers = parseUIMarkers(accumulatedText);
+            const markers = parseUIMarkers(accumulatedText, sessionId);
             if (markers.length > 0) {
               // Yield text before the first marker
               const firstMarkerIndex = accumulatedText.indexOf('[[UI:');

@@ -87,7 +87,7 @@ async function impactRoutes(fastify) {
     if (!ALLOWED_UI_EVENT_TYPES.has(eventType)) {
       return reply.code(400).send({ error: 'Invalid eventType' });
     }
-    await safeLogUIEvent(request, eventType, { ...metadata, sessionId });
+    await safeLogUIEvent(request, eventType, metadata);
     return reply.send({ ok: true });
   });
 }

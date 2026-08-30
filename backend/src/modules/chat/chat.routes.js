@@ -2,12 +2,13 @@ import { streamGeminiDeltas } from './chat.service.js';
 import { checkCrisis, CRISIS_RESPONSE } from '../safety/crisis-check.js';
 import { logEvent } from '../impact/impact.repository.js';
 import config from '../../config.js';
+import { createHash } from 'crypto';
 
 const VALID_ROLES = new Set(['user', 'assistant']);
 const MAX_CONTENT_LENGTH = 2000;
 const MAX_MESSAGES = 20;
 
-function validateChatBody(body) {
+export function validateChatBody(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { valid: false, error: 'Request body must be a JSON object.' };
   }
@@ -54,7 +55,11 @@ async function chatRoutes(fastify) {
       (m) => m.role === 'user'
     );
     if (lastUserMessage && checkCrisis(lastUserMessage.content)) {
-      request.log.info('crisis filter triggered');
+      request.log.warn({
+        requestId: request.id,
+        ipHash: request.ip ? createHash('sha256').update(request.ip + (process.env.IP_HASH_SALT || 'pinfohealth-salt')).digest('hex').slice(0, 12) : 'unknown',
+        event: 'crisis_intercepted',
+      }, 'Crisis filter triggered');
       return reply.code(200).send({ type: 'crisis', reply: CRISIS_RESPONSE });
     }
 
@@ -69,7 +74,7 @@ async function chatRoutes(fastify) {
     });
 
     try {
-      for await (const chunk of streamGeminiDeltas(request.body.messages)) {
+      for await (const chunk of streamGeminiDeltas(request.body.messages, request.body.sessionId)) {
         if (chunk.type === 'text') {
           reply.raw.write(`data: ${JSON.stringify({ type: 'text', delta: chunk.delta })}\n\n`);
         } else if (chunk.type === 'ui') {

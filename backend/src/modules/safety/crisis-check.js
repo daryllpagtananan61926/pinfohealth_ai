@@ -21,7 +21,7 @@ const PLAN_PATTERNS = [
 ];
 
 const ABUSE_DANGER_PATTERNS = [
-  /\b(abuse|abused|assault|raped|molest)\b/i,
+  /\b(abuse|abused|assault|assaulted|raped|molest|molested)\b/i,
   /\b(immediate\s+danger|in\s+danger|unsafe|threaten|threatening)\b/i,
   /\b(domestic\s+violence|partner\s+hurt|family\s+hurt)\b/i,
 ];
